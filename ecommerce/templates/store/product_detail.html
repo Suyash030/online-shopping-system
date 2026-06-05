@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-6">
+        <img src="{{ product.image.url }}" class="img-fluid">
+    </div>
+    <div class="col-md-6">
+        <h2>{{ product.name }}</h2>
+        <p>{{ product.description }}</p>
+        <h4>${{ product.price }}</h4>
+        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">
+            Add to Cart
+        </a>
+    </div>
+</div>
+<hr>
+<h4>Average Rating: {{ average_rating|default:"No ratings yet" }}</h4>
+
+<h5>Reviews</h5>
+
+{% for review in reviews %}
+<div class="card mb-2">
+    <div class="card-body">
+        <strong>{{ review.user.username }}</strong>
+        <p>Rating: ⭐ {{ review.rating }}/5</p>
+        <p>{{ review.comment }}</p>
+    </div>
+</div>
+{% empty %}
+<p>No reviews yet.</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+<hr>
+<h5>Add Review</h5>
+<form method="POST">
+    {% csrf_token %}
+    <div class="mb-2">
+        <label>Rating (1-5)</label>
+        <input type="number" name="rating" min="1" max="5" class="form-control">
+    </div>
+    <div class="mb-2">
+        <label>Comment</label>
+        <textarea name="comment" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Review</button>
+</form>
+{% else %}
+<p>Please login to add review.</p>
+{% endif %}
+{% endblock %}

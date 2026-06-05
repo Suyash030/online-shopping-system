@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="checkout-box mt-4">
+            <h3 class="mb-3">Order Summary</h3>
+            <h5>Total Amount: <span class="text-success">${{ order.get_cart_total }}</span></h5>
+
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success w-100 mt-3">
+                    Place Order
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
